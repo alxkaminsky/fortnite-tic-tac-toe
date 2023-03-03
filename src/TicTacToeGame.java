@@ -5,7 +5,7 @@ import javax.imageio.*;
 import java.io.*;
 import java.awt.Font;
 
-public class TicTacToeGame extends JPanel implements MouseListener
+public class TicTacToeGame extends JPanel implements MouseListener, MouseMotionListener
 {
     Image title;
     Image player2;
@@ -17,15 +17,15 @@ public class TicTacToeGame extends JPanel implements MouseListener
     Font fortnite;
     int screen = 1;
     int players;
-    int turn =1;
-    int moves1= 1;
-    int moves2= 0;
+    int turn = 1;
+    int moves1 = 1;
+    int moves2 = 0;
     int[][] board = {
-    { 0, 0, 0 },
-    { 0, 0, 0 },
-    { 0, 0, 0 }};
-    boolean player1win =false;
-    boolean player2win= false;
+            {0, 0, 0},
+            {0, 0, 0},
+            {0, 0, 0}};
+    boolean player1win = false;
+    boolean player2win = false;
     boolean tie = false;
 
     int mousepressed = 1;
@@ -44,13 +44,11 @@ public class TicTacToeGame extends JPanel implements MouseListener
             oImage = ImageIO.read(new File("mini.png"));
             victory = ImageIO.read(new File("victoryRoyale.png"));
         }
-
         catch (IOException e)
-        {
-        }
+        {}
     }
 
-    public void paint (Graphics g)
+    public void paint(Graphics g)
     {
         if (screen == 1)
         {
@@ -66,7 +64,7 @@ public class TicTacToeGame extends JPanel implements MouseListener
         }
     }
 
-    public void startScreen (Graphics g)
+    public void startScreen(Graphics g)
     {
         g.drawImage(title, 0, 0, null);
 
@@ -80,7 +78,7 @@ public class TicTacToeGame extends JPanel implements MouseListener
         g.drawString("PRESS TO START", 446, 421);
     }
 
-    public void drawLobby (Graphics g)
+    public void drawLobby(Graphics g)
     {
         g.drawImage(lobby, 0, 0, null);
         g.setColor(Color.white);
@@ -97,7 +95,7 @@ public class TicTacToeGame extends JPanel implements MouseListener
         Font biggerFont2 = fortnite.deriveFont(36f);
         g.setFont(biggerFont2);
         g.setColor(Color.white);
-        g.drawString("SOLO",894, 454 );
+        g.drawString("SOLO", 894, 454);
         players = 1;
     }
 
@@ -186,36 +184,36 @@ public class TicTacToeGame extends JPanel implements MouseListener
             player2win = true;
             playervictory(g);
         }
-        else if (moves1 + moves2 == 9)
+        else if (moves1 + moves2 == 10)
         {
             tie = true;
             playervictory(g);
         }
     }
 
-    public void playervictory(Graphics g)
-    {
+    public void playervictory(Graphics g) {
 
-       if (player1win == true)
-       {
-           g.drawImage(victory, 652, 86, null);
-           g.setColor(Color.white);
-           g.setFont(fortnite);
-           g.drawString("PLAYER 1 WON IN " + moves1 + " MOVES!", 694, 354);
-       }
-       else if (player2win == true)
-       {
-           g.drawImage(victory, 652, 86, null);
-           g.setColor(Color.white);
-           g.setFont(fortnite);
-           g.drawString("PLAYER 2 WON IN " + moves2 + " MOVES!", 694, 354);
-       }
-       else if (tie == true)
-       {
-           g.setColor(Color.white);
-           g.setFont(fortnite);
-           g.drawString("TIE!", 700, 354);
-       }
+        if (player1win == true)
+        {
+            g.drawImage(victory, 652, 86, null);
+            g.setColor(Color.white);
+            g.setFont(fortnite);
+            g.drawString("PLAYER 1 WON IN " + moves1 + " MOVES!", 694, 354);
+        }
+        else if (player2win == true)
+        {
+            g.drawImage(victory, 652, 86, null);
+            g.setColor(Color.white);
+            g.setFont(fortnite);
+            g.drawString("PLAYER 2 WON IN " + moves2 + " MOVES!", 694, 354);
+        }
+        else if (tie == true)
+        {
+            g.setColor(Color.white);
+            Font biggerFont2 = fortnite.deriveFont(50f);
+            g.setFont(biggerFont2);
+            g.drawString("TIE!", 700, 354);
+        }
 
     }
 
@@ -224,46 +222,66 @@ public class TicTacToeGame extends JPanel implements MouseListener
         Font biggerFont2 = fortnite.deriveFont(36f);
         g.setFont(biggerFont2);
 
-      if (mousepressed%2==1)
-      {
-          drawLobby(g);
-      }
+            if (mousepressed % 2 == 1)
+            {
+               drawLobby(g);
+            }
 
-      if (mousepressed%2==0)
-      {
-          g.setColor(Color.decode("#2b3348"));
-          g.fillRect(850, 427, 151, 31);
-          g.setColor(Color.white);
-          g.setFont(biggerFont2);
-          g.drawString("DUOS", 891, 454);
-          g.drawImage(player2, 124, 107 , null);
-          g.setFont(fortnite);
-          players =2;
-      }
+        if (mousepressed % 2 == 0)
+        {
+            g.setColor(Color.decode("#2b3348"));
+            g.fillRect(850, 427, 151, 31);
+            g.setColor(Color.white);
+            g.setFont(biggerFont2);
+            g.drawString("DUOS", 891, 454);
+            g.drawImage(player2, 124, 107, null);
+            g.setFont(fortnite);
+            players = 2;
+        }
     }
 
-    public void mouseClicked (MouseEvent e)
+    public void mouseClicked(MouseEvent e)
     {
+    }
+
+    public void mousePressed(MouseEvent e)
+    {
+        Graphics g = getGraphics();
         int x = e.getX();
         int y = e.getY();
 
-        if (screen == 3)
+        if (screen == 1) //title screen
         {
-            for (int i = 0; i < 403; i+=201)
-            { // check x
-                for (int j = 0; j < 403; j+=201)
-                { // check y
-                    if (x > i && x < i+201 && y > j && y < j+201 && board[i/201][j/201] == 0)
-                    {
-                        board[i/201][j/201] = turn;
+            if (x >= 412 && x <= 674 && y >= 383 && y <= 433) {
+                screen = 2;
+                repaint();
+            }
+        }
+
+        if (screen == 2) //lobby screen
+        {
+            if (x >= 1012 && x <= 1032 && y >= 430 && y <= 454) {
+                mousepressed++;
+                GameModeSelector(g);
+            }
+
+            if (x >= 794 && x <= 1061 && y >= 500 && y <= 582) {
+                screen = 3;
+                repaint();
+            }
+        }
+
+        if (screen == 3) {
+            for (int i = 0; i < 403; i += 201) { // check x
+                for (int j = 0; j < 403; j += 201) { // check y
+                    if (x > i && x < i + 201 && y > j && y < j + 201 && board[i / 201][j / 201] == 0) {
+                        board[i / 201][j / 201] = turn;
                         turn = turn == 1 ? 2 : 1;
-                        if (turn==1)
-                        {
+                        if (turn == 1) {
                             moves1++;
                             System.out.println(moves1);
                         }
-                        if (turn == 2)
-                        {
+                        if (turn == 2) {
                             moves2++;
                         }
                     }
@@ -274,48 +292,24 @@ public class TicTacToeGame extends JPanel implements MouseListener
         }
 
     }
-    public void mousePressed (MouseEvent e)
-    {
-        Graphics g = getGraphics();
-        int x = e.getX();
-        int y = e.getY();
 
-        if (screen == 1) //title screen
-        {
-            if (x >= 412 && x <= 674 && y >= 383 && y <= 433)
-            {
-                screen = 2;
-                repaint();
-            }
-        }
 
-        if (screen == 2) //lobby screen
-        {
-            if (x >= 1012 && x <= 1032 && y >= 430 && y <= 454)
-            {
-              mousepressed++;
-              GameModeSelector(g);
-            }
-
-            if (x >= 794 && x <= 1061 && y >= 500 && y <= 582)
-            {
-              screen = 3;
-              repaint();
-            }
-        }
-    }
-
-    public void mouseReleased (MouseEvent e)
+    public void mouseReleased(MouseEvent e)
     {
     }
-    public void mouseEntered (MouseEvent e)
+    public void mouseEntered(MouseEvent e)
     {
     }
-    public void mouseExited (MouseEvent e)
+    public void mouseExited(MouseEvent e)
+    {
+    }
+    public void mouseDragged(MouseEvent e)
+    {
+    }
+    public void mouseMoved(MouseEvent e)
     {
     }
 
 }
-
 
 
