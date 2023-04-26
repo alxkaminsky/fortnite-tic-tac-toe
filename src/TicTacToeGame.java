@@ -3,6 +3,8 @@ import javax.swing.*;
 import java.awt.event.*;
 import javax.imageio.*;
 import java.io.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class TicTacToeGame extends JPanel implements MouseListener, ActionListener {
     Image title;
@@ -21,6 +23,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     int moves2 = 0;
     int dotCount = 0;
     int mousepressed = 1;
+    int keypressed = 0;
     int[][] board = {
             {0, 0, 0},
             {0, 0, 0},
@@ -28,6 +31,8 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     boolean player1win = false;
     boolean player2win = false;
     boolean tie = false;
+    private final Timer timer = new Timer(400, this);
+
 
     /**
      * Constructor. Load images.
@@ -36,7 +41,8 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     {
         addMouseListener(this);
 
-        try {
+        try
+        {
             title = ImageIO.read(new File("Title.png"));
             lobby = ImageIO.read(new File("LobbyScreenMain.png"));
             player2 = ImageIO.read(new File("player2.png"));
@@ -45,7 +51,8 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             oImage = ImageIO.read(new File("mini.png"));
             victory = ImageIO.read(new File("victoryRoyale.png"));
             background2 = ImageIO.read(new File("Board2.png"));
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
         }
     }
 
@@ -59,7 +66,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
         } else if (screen == 3) {
             DrawBoard(g);
 
-            if (player1win == false && player2win == false && tie == false)
+            if (players == 2 && player1win == false && player2win == false && tie == false)
             {
                 Animation(g);
             }
@@ -116,11 +123,118 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
         g.fillRect(0, 400, 603, 4);
         g.fillRect(0, 601, 603, 4);
         //draw x's and o's
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[i][j] == 1) {
+        if (turn == 2 && players == 1)
+        {
+            if (board[0][0] == 1 && board [0][1] == 1 && board [0][2] == 0)
+            {
+                board[0][2] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else if (board[0][0] == 0 && board [0][1] == 1 && board [0][2] == 1)
+            {
+                board [0][0] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else if (board [1][0] ==1 && board [1][1]==1 && board [1][2]==0)
+            {
+                board [1][2] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else if (board [1][0] ==0 && board [1][1]==1 && board [1][2]==1)
+            {
+                board [1][0] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else if (board [2][0] ==1 && board [2][1]==1 && board [2][2]==0)
+            {
+                board [2][2] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else if (board [2][0] ==0 && board [2][1]==1 && board [2][2]==1)
+            {
+                board [2][0] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else if (board [0][0] ==1 && board [1][0]==1 && board [2][0]==0)
+            {
+                board [2][0] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else if (board [0][0] ==0 && board [1][0]==1 && board [2][0]==1)
+            {
+                board [0][0] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else if (board [0][1] ==1 && board [1][1]==1 && board [2][1]==0)
+            {
+                board [2][1] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else if (board [0][1] ==0 && board [1][1]==1 && board [2][1]==1)
+            {
+                board [0][1] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else if (board [0][2] ==1 && board [1][2]==1 && board [2][2]==0)
+            {
+                board [2][2] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else if (board [0][2] ==0 && board [1][2]==1 && board [2][2]==1)
+            {
+                board [0][2] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else if (board [0][0] ==1 && board [1][1]==1 && board [2][2]==0)
+            {
+                board [2][2] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else if (board [0][0] ==0 && board [1][1]==1 && board [2][2]==1)
+            {
+                board[0][0] = 2;
+                moves2++;
+                turn = 1;
+            }
+            else
+            {
+                int x = (int)(Math.random() * 3);
+                int y = (int)(Math.random() * 3);
+                while (board[x][y] != 0)
+                {
+                    x = (int)(Math.random() * 3);
+                    y = (int)(Math.random() * 3);
+                }
+                board[x][y] = 2;
+                moves2++;
+                turn = 1;
+            }
+        }
+
+//Draw x and o
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (board[i][j] == 1)
+                {
                     g.drawImage(xImage, i * 201, j * 201, null);
-                } else if (board[i][j] == 2) {
+                }
+                else if (board[i][j] == 2)
+                {
                     g.drawImage(oImage, i * 201, j * 201, null);
                 }
             }
@@ -130,7 +244,6 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
     public void Animation(Graphics g)
     {
-        Timer timer = new Timer(600, this);
         g.setColor(Color.white);
         g.setFont(fortnite);
         g.drawString("PLAYER " + turn + "'S TURN", 694, 354);
@@ -139,9 +252,11 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
     public void checkWinner(Graphics g) {
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++)
+        {
             // Check horizontal
-            if (board[i][0] == 1 && board[i][1] == 1 && board[i][2] == 1) {
+            if (board[i][0] == 1 && board[i][1] == 1 && board[i][2] == 1)
+            {
                 player1win = true;
                 playervictory(g);
             }
@@ -200,11 +315,13 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
     }
 
-    public void GameModeSelector(Graphics g) {
+    public void GameModeSelector(Graphics g)
+    {
         Font biggerFont2 = fortnite.deriveFont(36f);
         g.setFont(biggerFont2);
 
-        if (mousepressed % 2 == 1) {
+        if (mousepressed % 2 == 1)
+        {
             drawLobby(g);
         }
 
@@ -250,22 +367,30 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             }
         }
 
-        if (screen == 3) {
-            for (int i = 0; i < 403; i += 201) { // check x
-                for (int j = 0; j < 403; j += 201) { // check y
-                    if (x > i && x < i + 201 && y > j && y < j + 201 && board[i / 201][j / 201] == 0) {
+        if (screen == 3)
+        {
+            for (int i = 0; i < 403; i += 201)
+            { // check x
+                for (int j = 0; j < 403; j += 201)
+                { // check y
+                    if (x > i && x < i + 201 && y > j && y < j + 201 && board[i / 201][j / 201] == 0)
+                    {
                         board[i / 201][j / 201] = turn;
-                        if (turn == 1) {
+                        if (turn == 1)
+                        {
                             moves1++;
                         }
-                        if (turn == 2) {
+                        if (turn == 2)
+                        {
                             moves2++;
                         }
+                        System.out.println(moves2+moves1);
                         turn = turn == 1 ? 2 : 1;
                     }
                 }
             }
             repaint();
+
         }
     }
 
@@ -281,18 +406,17 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
     public void actionPerformed(ActionEvent evt)
     {
-        if (screen == 3 && player1win == false && player2win == false && tie == false)
+        if (screen == 3 && players == 2 && !player1win && !player2win && !tie)
         {
-
             Graphics g = getGraphics();
 
-           if (dotCount == 0)
-           {
-               g.setColor(Color.WHITE);
-               g.setFont(fortnite);
-               g.drawString(".", 885, 354);
-               dotCount++;
-           }
+            if (dotCount == 0)
+            {
+                g.setColor(Color.WHITE);
+                g.setFont(fortnite);
+                g.drawString(".", 885, 354);
+                dotCount++;
+            }
             else if (dotCount == 1)
             {
                 g.setColor(Color.WHITE);
@@ -300,7 +424,6 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
                 g.drawString(".", 895, 354);
                 dotCount++;
             }
-
             else if (dotCount == 2)
             {
                 g.setColor(Color.WHITE);
@@ -308,19 +431,15 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
                 g.drawString(". ", 905, 354);
                 dotCount++;
             }
-
-           else if (dotCount == 3)
-           {
-               dotCount = 0;
-               g.drawImage(background2, 689, 161, null);
-               g.setColor(Color.WHITE);
-               g.setFont(fortnite);
-               g.drawString("PLAYER " + turn + "'S TURN", 694, 354);
-           }
-
-            System.out.println(dotCount);
+            else if (dotCount == 3)
+            {
+                dotCount = 0;
+                g.drawImage(background2, 689, 161, null);
+                g.setColor(Color.WHITE);
+                g.setFont(fortnite);
+                g.drawString("PLAYER " + turn + "'S TURN", 694, 354);
+            }
         }
-
-
     }
+
 }
