@@ -32,6 +32,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     Image buttons;
 
     Font fortnite;
+
     int screen = 1;
     int players = 1;
     int turn = 1;
@@ -41,6 +42,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     int mousepressed = 1;
     int keypressed = 0;
     int playerselect = 1;
+    
     int[][] board = {
             {0, 0, 0},
             {0, 0, 0},
@@ -50,11 +52,11 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     boolean player1win = false;
     boolean player2win = false;
     boolean tie = false;
+
     private final Timer timer = new Timer(250, this);
 
-
     /**
-     * Constructor. Load images.
+     * Constructor
      */
     public TicTacToeGame(JFrame frame)
     {
@@ -136,6 +138,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             buttons = ImageIO.read(new File("buttons.png"));
         }
         catch (IOException e) {
+            System.exit(1);
         }
     }
 
@@ -179,6 +182,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
         else if (screen == 3)
         {
             drawCharacterSelect(g);
+            resetGameStats();
         }
 
         else if (screen == 4)
@@ -189,6 +193,8 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             {
                 Animation(g);
             }
+        } else {
+            System.exit(1);
         }
     }
 
@@ -261,8 +267,9 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
         g.fillRect(0, 199, 603, 4);
         g.fillRect(0, 400, 603, 4);
         g.fillRect(0, 601, 603, 4);
+
         //draw x's and o's
-        if (turn == 2 && players == 1)
+        if (turn == 2 && players == 1 && moves1+moves2<=8)
         {
             if (board[0][0] == 1 && board [0][1] == 1 && board [0][2] == 0)
                 board[0][2] = 2;
@@ -318,26 +325,21 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
                         break;
                 } while (board[x][y] != 0 && (!player1win && !player2win && !tie));
                 board[x][y] = 2;
-                moves2++;
-                turn = 1;
+                System.out.println("I DID ONE MOVE YEEY");
             }
+
+            moves2++;
+            turn = 1;
         }
 
-//Draw x and o
-
-
+        //Draw x and o
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                if (board[i][j] == 1)
-                {
-                    g.drawImage(xImage, i * 201, j * 201, null);
-                }
-                else if (board[i][j] == 2)
-                {
-                    g.drawImage(oImage, i * 201, j * 201, null);
-                }
+                if (board[i][j] == 0)
+                    continue;
+                g.drawImage(board[i][j] == 1 ? xImage : oImage, j * 201, i * 201, null);
             }
         }
         checkWinner(g);
@@ -353,6 +355,10 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
     public void checkWinner(Graphics g)
      {
+         if (moves1 + moves2 == 9) {
+             tie = true;
+             playervictory(g);
+        }
 
         for (int i = 0; i < 3; i++)
         {
@@ -361,6 +367,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             {
                 player1win = true;
                 playervictory(g);
+                System.out.println("WON HORIZONTAL PLAYER 1");
             }
             // Check vertical
             else if (board[0][i] == 1 && board[1][i] == 1 && board[2][i] == 1) {
@@ -389,9 +396,6 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             playervictory(g);
         } else if (board[0][2] == 2 && board[1][1] == 2 && board[2][0] == 2) {
             player2win = true;
-            playervictory(g);
-        } else if (moves1 + moves2 == 9) {
-            tie = true;
             playervictory(g);
         }
     }
@@ -448,10 +452,6 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
         }
     }
 
-    public void mouseClicked(MouseEvent e)
-    {
-    }
-
     public void mousePressed(MouseEvent e)
     {
         Graphics g = getGraphics();
@@ -481,7 +481,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             }
         }
 
-        if (screen == 3)
+        if (screen == 3) // character selection
         {
             if (x >= 42 && x <= 242 && y >= 52 && y <= 296)
             {
@@ -560,24 +560,20 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             }
         }
 
-        if (screen == 4)
+        if (screen == 4) // game
         {
             for (int i = 0; i < 403; i += 201)
             { // check x
                 for (int j = 0; j < 403; j += 201)
                 { // check y
-                    if (x > i && x < i + 201 && y > j && y < j + 201 && board[i / 201][j / 201] == 0)
+                    if (y > i && y < i + 201 && x > j && x < j + 201 && board[i / 201][j / 201] == 0)
                     {
                         board[i / 201][j / 201] = turn;
                         System.out.println("turn: " + turn);
                         if (turn == 1)
-                        {
                             moves1++;
-                        }
-                        if (turn == 2)
-                        {
+                        else if (turn == 2)
                             moves2++;
-                        }
                         turn = turn == 1 ? 2 : 1;
                         dotCount = 0;  // reset dot count for animamtion
 //                        System.out.println("Moves 1:" + moves1);
@@ -601,18 +597,6 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             }
         }
 
-    }
-
-    public void mouseClicked(MouseEvent e) {}
-
-    public void mouseReleased(MouseEvent e) {}
-
-    public void mouseEntered(MouseEvent e)
-    {
-    }
-
-    public void mouseExited(MouseEvent e)
-    {
     }
 
     public void actionPerformed(ActionEvent evt)
@@ -653,4 +637,11 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
         }
     }
 
+    public void mouseClicked(MouseEvent e) {}
+
+    public void mouseReleased(MouseEvent e) {}
+
+    public void mouseEntered(MouseEvent e) {}
+
+    public void mouseExited(MouseEvent e) {}
 }
