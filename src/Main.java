@@ -1,5 +1,6 @@
 import javax.swing.JFrame;
 
+
 public class Main
 {
     public static void main(String[] args)
@@ -11,7 +12,7 @@ public class Main
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        TicTacToeGame game = new  TicTacToeGame();
+        TicTacToeGame game = new TicTacToeGame(frame);
         frame.add(game);
         frame.setVisible(true);
     }
