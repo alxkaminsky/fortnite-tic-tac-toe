@@ -6,15 +6,28 @@ import java.io.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class TicTacToeGame extends JPanel implements MouseListener, ActionListener {
+public class TicTacToeGame extends JPanel implements MouseListener, ActionListener
+{
     Image title;
     Image player2;
     Image lobby;
     Image background;
-    Image xImage;
-    Image oImage;
+    Image banshee;
+    Image hawk;
+    Image headhunter;
+    Image jonesy;
+    Image ramirez;
+    Image renegade;
+    Image stan;
+    Image wildcat;
     Image victory;
     Image background2;
+    Image repaintplayerselect;
+    Image playerselect1;
+    Image playerselect2;
+    Image xImage;
+    Image oImage;
+    Image selectRect;
     Font fortnite;
     int screen = 1;
     int players = 1;
@@ -24,6 +37,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     int dotCount = 0;
     int mousepressed = 1;
     int keypressed = 0;
+    int playerselect = 1;
     int[][] board = {
             {0, 0, 0},
             {0, 0, 0},
@@ -31,7 +45,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     boolean player1win = false;
     boolean player2win = false;
     boolean tie = false;
-    private final Timer timer = new Timer(400, this);
+    private final Timer timer = new Timer(250, this);
 
 
     /**
@@ -47,10 +61,20 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             lobby = ImageIO.read(new File("LobbyScreenMain.png"));
             player2 = ImageIO.read(new File("player2.png"));
             background = ImageIO.read(new File("dustydepot.jpg"));
-            xImage = ImageIO.read(new File("flopper.png"));
-            oImage = ImageIO.read(new File("mini.png"));
             victory = ImageIO.read(new File("victoryRoyale.png"));
             background2 = ImageIO.read(new File("Board2.png"));
+            banshee = ImageIO.read(new File("Banshee.png"));
+            hawk = ImageIO.read(new File("Hawk.png"));
+            headhunter = ImageIO.read(new File("Headhunter.png"));
+            jonesy = ImageIO.read(new File("Jonesy.png"));
+            ramirez = ImageIO.read(new File("Ramirez.png"));
+            renegade = ImageIO.read(new File("Renegade.png"));
+            stan = ImageIO.read(new File("Stan.png"));
+            wildcat = ImageIO.read(new File("Wildcat.png"));
+            repaintplayerselect = ImageIO.read(new File("repaintPlayerselect.png"));
+            playerselect1 = ImageIO.read(new File("Playerselect1.png"));
+            playerselect2 = ImageIO.read(new File("Playerselect2.png"));
+            selectRect = ImageIO.read(new File("SelectRect.png"));
         }
         catch (IOException e) {
         }
@@ -61,12 +85,21 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
         if (screen == 1)
         {
             startScreen(g);
-        } else if (screen == 2) {
+        }
+        else if (screen == 2)
+        {
             drawLobby(g);
-        } else if (screen == 3) {
+        }
+        else if (screen == 3)
+        {
+            drawCharacterSelect(g);
+        }
+
+        else if (screen == 4)
+        {
             DrawBoard(g);
 
-            if (players == 2 && player1win == false && player2win == false && tie == false)
+            if (players == 2 && !player1win && !player2win && !tie)
             {
                 Animation(g);
             }
@@ -225,6 +258,8 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
         }
 
 //Draw x and o
+
+
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
@@ -245,12 +280,13 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     public void Animation(Graphics g)
     {
         g.setColor(Color.white);
-        g.setFont(fortnite);
-        g.drawString("PLAYER " + turn + "'S TURN", 694, 354);
+        g.setFont(fortnite.deriveFont(45f));
+        g.drawString("PLAYER " + turn + "'S TURN", 695, 315);
         timer.start();
     }
 
-    public void checkWinner(Graphics g) {
+    public void checkWinner(Graphics g)
+     {
 
         for (int i = 0; i < 3; i++)
         {
@@ -356,18 +392,84 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
         if (screen == 2) //lobby screen
         {
-            if (x >= 1012 && x <= 1032 && y >= 430 && y <= 454) {
+            if (x >= 1012 && x <= 1032 && y >= 430 && y <= 454)
+            {
                 mousepressed++;
                 GameModeSelector(g);
             }
 
-            if (x >= 794 && x <= 1061 && y >= 500 && y <= 582) {
+            if (x >= 794 && x <= 1061 && y >= 500 && y <= 582)
+            {
                 screen = 3;
                 repaint();
             }
         }
 
         if (screen == 3)
+        {
+            if (x >= 42 && x <= 242 && y >= 52 && y <= 296)
+            {
+                if (playerselect == 1)
+                {
+                    xImage = hawk.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    repaint();
+                    g.drawImage(selectRect, 40, 52, null);
+                }
+                else if (playerselect == 2)
+                {
+                    oImage = renegade.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    repaint();
+                    g.drawImage(selectRect, 40, 52, null);
+                }
+            }
+            if (x >= 310 && x <= 507 && y >= 52 && y <= 296)
+            {
+                if (playerselect == 1)
+                {
+                    xImage = headhunter.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                }
+                else if (playerselect == 2)
+                {
+                    oImage = stan.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                }
+            }
+            if (x >= 567 && x <= 763 && y >= 52 && y <= 296)
+            {
+                if (playerselect == 1)
+                {
+                    xImage = jonesy.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                }
+                else if (playerselect == 2)
+                {
+                    oImage = ramirez.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                }
+            }
+            if (x >= 830 && x <= 1028  && y >= 52 && y <= 296)
+            {
+                if (playerselect == 1)
+                {
+                    xImage = wildcat.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                }
+                else if (playerselect == 2)
+                {
+                    oImage = banshee.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                }
+            }
+            if (x >= 315 && x <= 756 && y >= 500 && y <= 573)
+            {
+                if (playerselect == 1)
+                {
+                    playerselect = 2;
+                    drawCharacterSelect(g);
+                }
+                else if (playerselect == 2)
+                {
+                    screen = 4;
+                }
+            }
+        }
+
+        if (screen == 4)
         {
             for (int i = 0; i < 403; i += 201)
             { // check x
@@ -384,7 +486,6 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
                         {
                             moves2++;
                         }
-                        System.out.println(moves2+moves1);
                         turn = turn == 1 ? 2 : 1;
                     }
                 }
@@ -397,47 +498,49 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     public void mouseReleased(MouseEvent e) {
     }
 
-    public void mouseEntered(MouseEvent e) {
+    public void mouseEntered(MouseEvent e)
+    {
     }
 
-    public void mouseExited(MouseEvent e) {
+    public void mouseExited(MouseEvent e)
+    {
     }
 
 
     public void actionPerformed(ActionEvent evt)
     {
-        if (screen == 3 && players == 2 && !player1win && !player2win && !tie)
+        if (screen == 4 && players == 2 && !player1win && !player2win && !tie)
         {
             Graphics g = getGraphics();
 
             if (dotCount == 0)
             {
                 g.setColor(Color.WHITE);
-                g.setFont(fortnite);
-                g.drawString(".", 885, 354);
+                g.setFont(fortnite.deriveFont(45f));
+                g.drawString(".", 961, 315);
                 dotCount++;
             }
             else if (dotCount == 1)
             {
                 g.setColor(Color.WHITE);
-                g.setFont(fortnite);
-                g.drawString(".", 895, 354);
+                g.setFont(fortnite.deriveFont(45f));
+                g.drawString(".", 976, 315);
                 dotCount++;
             }
             else if (dotCount == 2)
             {
                 g.setColor(Color.WHITE);
-                g.setFont(fortnite);
-                g.drawString(". ", 905, 354);
+                g.setFont(fortnite.deriveFont(45f));
+                g.drawString(". ", 991, 315);
                 dotCount++;
             }
             else if (dotCount == 3)
             {
                 dotCount = 0;
-                g.drawImage(background2, 689, 161, null);
+                g.drawImage(background2, 609, 0, null);
                 g.setColor(Color.WHITE);
-                g.setFont(fortnite);
-                g.drawString("PLAYER " + turn + "'S TURN", 694, 354);
+                g.setFont(fortnite.deriveFont(45f));
+                g.drawString("PLAYER " + turn + "'S TURN", 695, 315);
             }
         }
     }
