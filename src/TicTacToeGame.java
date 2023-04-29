@@ -5,7 +5,6 @@ import javax.imageio.*;
 import java.io.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
 
 public class TicTacToeGame extends JPanel implements MouseListener, ActionListener
 {
@@ -30,9 +29,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     Image oImage;
     Image selectRect;
     Image buttons;
-
     Font fortnite;
-
     int screen = 1;
     int players = 1;
     int turn = 1;
@@ -40,6 +37,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     int moves2 = 0;
     int dotCount = 0;
     int mousepressed = 1;
+    int mousepressed2 = 0;
     int keypressed = 0;
     int playerselect = 1;
     
@@ -52,7 +50,6 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     boolean player1win = false;
     boolean player2win = false;
     boolean tie = false;
-
     private final Timer timer = new Timer(250, this);
 
     /**
@@ -136,6 +133,9 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             playerselect2 = ImageIO.read(new File("Playerselect2.png"));
             selectRect = ImageIO.read(new File("SelectRect.png"));
             buttons = ImageIO.read(new File("buttons.png"));
+
+            xImage = hawk.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+            oImage = banshee.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
         }
         catch (IOException e) {
             System.exit(1);
@@ -355,11 +355,6 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
     public void checkWinner(Graphics g)
      {
-         if (moves1 + moves2 == 9) {
-             tie = true;
-             playervictory(g);
-        }
-
         for (int i = 0; i < 3; i++)
         {
             // Check horizontal
@@ -398,6 +393,11 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             player2win = true;
             playervictory(g);
         }
+         if (moves1 + moves2 == 9)
+         {
+             tie = true;
+             playervictory(g);
+         }
     }
 
     public void playervictory(Graphics g)
@@ -468,91 +468,20 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
         if (screen == 2) //lobby screen
         {
-            if (x >= 1012 && x <= 1032 && y >= 430 && y <= 454)
-            {
+            if (x >= 1012 && x <= 1032 && y >= 430 && y <= 454) {
                 mousepressed++;
                 GameModeSelector(g);
             }
 
             if (x >= 794 && x <= 1061 && y >= 500 && y <= 582)
             {
-                screen = 3;
-                repaint();
-            }
-        }
-
-        if (screen == 3) // character selection
-        {
-            if (x >= 42 && x <= 242 && y >= 52 && y <= 296)
-            {
-                if (playerselect == 1)
+                mousepressed2++;
+                if (mousepressed2 %2 == 1)
                 {
-                    xImage = hawk.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
-                    g.drawImage(playerselect1, 0, 0, null);
-                    g.drawImage(selectRect, 40, 52, null);
+                    screen = 3;
+                    repaint();
                 }
-                else if (playerselect == 2)
-                {
-                    oImage = renegade.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
-                    g.drawImage(playerselect2, 0, 0, null);
-                    g.drawImage(selectRect, 40, 52, null);
-                }
-            }
-            if (x >= 310 && x <= 507 && y >= 52 && y <= 296)
-            {
-                if (playerselect == 1)
-                {
-                    xImage = headhunter.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
-                    g.drawImage(playerselect1, 0, 0, null);
-                    g.drawImage(selectRect, 306, 52, null);
-
-                }
-                else if (playerselect == 2)
-                {
-                    oImage = stan.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
-                    g.drawImage(playerselect2, 0, 0, null);
-                    g.drawImage(selectRect, 306, 52, null);
-                }
-            }
-            if (x >= 567 && x <= 763 && y >= 52 && y <= 296)
-            {
-                if (playerselect == 1)
-                {
-                    xImage = jonesy.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
-                    g.drawImage(playerselect1, 0, 0, null);
-                    g.drawImage(selectRect, 563, 52, null);
-                }
-                else if (playerselect == 2)
-                {
-                    oImage = ramirez.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
-                    g.drawImage(playerselect2, 0, 0, null);
-                    g.drawImage(selectRect, 563, 52, null);
-                }
-            }
-            if (x >= 830 && x <= 1028  && y >= 52 && y <= 296)
-            {
-                if (playerselect == 1)
-                {
-                    xImage = wildcat.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
-                    g.drawImage(playerselect1, 0, 0, null);
-                    g.drawImage(selectRect, 826, 52, null);
-
-                }
-                else if (playerselect == 2)
-                {
-                    oImage = banshee.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
-                    g.drawImage(playerselect2, 0, 0, null);
-                    g.drawImage(selectRect, 826, 52, null);
-                }
-            }
-            if (x >= 315 && x <= 756 && y >= 500 && y <= 573)
-            {
-                if (playerselect == 1)
-                {
-                    playerselect = 2;
-                    drawCharacterSelect(g);
-                }
-                else if (playerselect == 2)
+                else if (mousepressed2 %2 == 0)
                 {
                     screen = 4;
                     repaint();
@@ -560,47 +489,106 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             }
         }
 
+        if (screen == 3) // character selection
+        {
+            if (x >= 42 && x <= 242 && y >= 52 && y <= 296) {
+                if (playerselect == 1) {
+                    xImage = hawk.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    g.drawImage(playerselect1, 0, 0, null);
+                    g.drawImage(selectRect, 40, 52, null);
+                } else if (playerselect == 2) {
+                    oImage = renegade.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    g.drawImage(playerselect2, 0, 0, null);
+                    g.drawImage(selectRect, 40, 52, null);
+                }
+            }
+            if (x >= 310 && x <= 507 && y >= 52 && y <= 296) {
+                if (playerselect == 1) {
+                    xImage = headhunter.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    g.drawImage(playerselect1, 0, 0, null);
+                    g.drawImage(selectRect, 306, 52, null);
+
+                } else if (playerselect == 2) {
+                    oImage = stan.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    g.drawImage(playerselect2, 0, 0, null);
+                    g.drawImage(selectRect, 306, 52, null);
+                }
+            }
+            if (x >= 567 && x <= 763 && y >= 52 && y <= 296) {
+                if (playerselect == 1) {
+                    xImage = jonesy.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    g.drawImage(playerselect1, 0, 0, null);
+                    g.drawImage(selectRect, 563, 52, null);
+                } else if (playerselect == 2) {
+                    oImage = ramirez.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    g.drawImage(playerselect2, 0, 0, null);
+                    g.drawImage(selectRect, 563, 52, null);
+                }
+            }
+            if (x >= 830 && x <= 1028 && y >= 52 && y <= 296) {
+                if (playerselect == 1) {
+                    xImage = wildcat.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    g.drawImage(playerselect1, 0, 0, null);
+                    g.drawImage(selectRect, 826, 52, null);
+
+                } else if (playerselect == 2) {
+                    oImage = banshee.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    g.drawImage(playerselect2, 0, 0, null);
+                    g.drawImage(selectRect, 826, 52, null);
+                }
+            }
+            if (x >= 315 && x <= 756 && y >= 500 && y <= 573) {
+                if (playerselect == 1) {
+                    playerselect = 2;
+                    drawCharacterSelect(g);
+                } else if (playerselect == 2) {
+                    screen = 2;
+                    repaint();
+                }
+            }
+        }
+
         if (screen == 4) // game
         {
-            for (int i = 0; i < 403; i += 201)
-            { // check x
-                for (int j = 0; j < 403; j += 201)
-                { // check y
-                    if (y > i && y < i + 201 && x > j && x < j + 201 && board[i / 201][j / 201] == 0)
-                    {
-                        board[i / 201][j / 201] = turn;
-                        System.out.println("turn: " + turn);
-                        if (turn == 1)
-                            moves1++;
-                        else if (turn == 2)
-                            moves2++;
-                        turn = turn == 1 ? 2 : 1;
-                        dotCount = 0;  // reset dot count for animamtion
+            if (!player1win && !player2win && !tie) {
+                for (int i = 0; i < 403; i += 201) { // check x
+                    for (int j = 0; j < 403; j += 201) { // check y
+                        if (y > i && y < i + 201 && x > j && x < j + 201 && board[i / 201][j / 201] == 0) {
+                            board[i / 201][j / 201] = turn;
+                            System.out.println("turn: " + turn);
+                            if (turn == 1)
+                                moves1++;
+                            else if (turn == 2)
+                                moves2++;
+                            turn = turn == 1 ? 2 : 1;
+                            dotCount = 0;  // reset dot count for animamtion
 //                        System.out.println("Moves 1:" + moves1);
 //                        System.out.println("Moves 2:" + moves2);
 //                        System.out.println(Arrays.deepToString(board));
+                        }
                     }
                 }
+                repaint();
             }
-            repaint();
 
-            if (x >= 692 && x<= 994 && y >= 415 && y<= 475 && player1win == true || x >= 692 && x<= 994 && y >= 415 && y<= 475 && player2win == true || x >= 692 && x<= 994 && y >= 415 && y<= 475 && tie == true)
-            {
+
+
+            if (x >= 692 && x <= 994 && y >= 415 && y <= 475 && player1win == true || x >= 692 && x <= 994 && y >= 415 && y <= 475 && player2win == true || x >= 692 && x <= 994 && y >= 415 && y <= 475 && tie == true) {
                 screen = 2;
                 players = 1;
                 resetGameStats();
                 repaint();
             }
-            if (x >= 687 && x <= 1005 && y>=483 && y<=584 && player1win == true || x >= 687 && x <= 1005 && y>=483 && y<=584 && player2win == true || x >= 687 && x <= 1005 && y>=483 && y<=584 && tie == true)
-            {
+            if (x >= 687 && x <= 1005 && y >= 483 && y <= 584 && player1win == true || x >= 687 && x <= 1005 && y >= 483 && y <= 584 && player2win == true || x >= 687 && x <= 1005 && y >= 483 && y <= 584 && tie == true) {
                 resetGameStats();
             }
         }
-
     }
+
 
     public void actionPerformed(ActionEvent evt)
     {
+
         if (screen == 4 && players == 2 && !player1win && !player2win && !tie)
         {
             Graphics g = getGraphics();
@@ -637,9 +625,12 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
         }
     }
 
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e)
+    {}
 
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e)
+    {
+    }
 
     public void mouseEntered(MouseEvent e) {}
 
