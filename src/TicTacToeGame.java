@@ -151,7 +151,6 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
         turn = 1;
         moves1 = 0;
         moves2 = 0;
-        mousepressed = 1;
     }
 
     /**
@@ -197,33 +196,48 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
      */
     public void drawLobby(Graphics g) {
         g.drawImage(lobby, 0, 0, null);
-        g.setColor(Color.white);
+        g.setFont(fortnite.deriveFont(53f));
+        g.setColor(Color.black);
 
-        //draw start game button
-        Font biggerFont = fortnite.deriveFont(53f);
-        g.setFont(biggerFont);
-        if (playerselect == 1)
-        {
-            g.setColor(Color.black);
+        if (playerselect == 1){
+
             g.drawString("SETUP", 870, 557);
+
+            if (mousepressed %2 == 1)
+                players=1;
+            else if (mousepressed %2 == 0)
+                players=2;
         }
-       else if (playerselect == 2)
-        {
-            g.setColor(Color.black);
+        else if (playerselect == 2){
             g.drawString("PLAY!", 877, 557);
+            if (mousepressed %2 == 1)
+                players=1;
+            else if (mousepressed %2 == 0)
+                players=2;
         }
-        //draw game mode button
-        g.setColor(Color.decode("#2b3348"));
-        g.drawRect(1012, 430, 20, 24); //right button of game mode
-        Font biggerFont2 = fortnite.deriveFont(36f);
-        g.setFont(biggerFont2);
-        g.setColor(Color.white);
-        g.drawString("SOLO", 894, 454);
+
+        if (players == 1){
+            repaint();
+            g.setFont(fortnite.deriveFont(36f));
+            g.setColor(Color.white);
+            g.drawString("SOLO", 894, 454);
+        }
+        else if (players == 2){
+            repaint();
+            g.setColor(Color.decode("#2b3348"));
+            g.fillRect(850, 427, 151, 31);
+            g.setFont(fortnite.deriveFont(36f));
+            g.setColor(Color.white);
+            g.drawString("DUOS", 891, 454);
+            g.drawImage(player2, 124, 107, null);
+        }
+
     }
 
     /**
      * 2 - Main game screen.
      */
+
     public void drawCharacterSelect(Graphics g) {
         if (playerselect == 1) {
             g.drawImage(playerselect1, 0, 0, null);
@@ -250,7 +264,9 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
         //draw x's and o's
         if (turn == 2 && players == 1 && moves1 + moves2 <= 8) {
-            if (board[0][0] == 1 && board[0][1] == 1 && board[0][2] == 0)
+            if (board [0][0]==1 && board [1][1] ==0 || board [0][2]== 1 && board [1][1] ==0 || board [2][0] == 1 && board [1][1] ==0 || board [2][2] == 1 && board [1][1] ==0 )
+                board [1][1] = 2;
+            else if (board[0][0] == 1 && board[0][1] == 1 && board[0][2] == 0)
                 board[0][2] = 2;
             else if (board[0][0] == 0 && board[0][1] == 1 && board[0][2] == 1)
                 board[0][0] = 2;
@@ -371,46 +387,22 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
     public void playervictory(Graphics g) {
         g.drawImage(buttons, 0, 0, null);
+        g.setColor(Color.white);
+        g.setFont(fortnite);
 
         if (player1win) {
             g.drawImage(victory, 652, 60, null);
-            g.setColor(Color.white);
-            g.setFont(fortnite);
             g.drawString("PLAYER 1 WON IN " + moves1 + " MOVES!", 694, 304);
         } else if (player2win) {
             g.drawImage(victory, 652, 60, null);
-            g.setColor(Color.white);
-            g.setFont(fortnite);
             g.drawString("PLAYER 2 WON IN " + moves2 + " MOVES!", 694, 304);
         } else if (tie) {
-            g.setColor(Color.white);
-            Font biggerFont2 = fortnite.deriveFont(50f);
-            g.setFont(biggerFont2);
+            g.setFont(fortnite.deriveFont(50f));
             g.drawString("TIE!", 800, 314);
         }
 
     }
 
-    public void GameModeSelector(Graphics g) {
-        Font biggerFont2 = fortnite.deriveFont(36f);
-        g.setFont(biggerFont2);
-
-        if (mousepressed % 2 == 1) {
-            drawLobby(g);
-            players = 1;
-        }
-
-        if (mousepressed % 2 == 0) {
-            g.setColor(Color.decode("#2b3348"));
-            g.fillRect(850, 427, 151, 31);
-            g.setColor(Color.white);
-            g.setFont(biggerFont2);
-            g.drawString("DUOS", 891, 454);
-            g.drawImage(player2, 124, 107, null);
-            g.setFont(fortnite);
-            players = 2;
-        }
-    }
 
     public void mousePressed(MouseEvent e) {
         Graphics g = getGraphics();
@@ -429,7 +421,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
         {
             if (x >= 1012 && x <= 1032 && y >= 430 && y <= 454) {
                 mousepressed++;
-                GameModeSelector(g);
+                repaint();
             }
 
             if (x >= 794 && x <= 1061 && y >= 500 && y <= 582) {
@@ -525,11 +517,11 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
             if (x >= 692 && x <= 994 && y >= 415 && y <= 475 && player1win || x >= 692 && x <= 994 && y >= 415 && y <= 475 && player2win || x >= 692 && x <= 994 && y >= 415 && y <= 475 && tie) {
                 screen = 2;
-                players = 1;
                 resetGameStats();
                 repaint();
             }
             if (x >= 687 && x <= 1005 && y >= 483 && y <= 584 && player1win || x >= 687 && x <= 1005 && y >= 483 && y <= 584 && player2win || x >= 687 && x <= 1005 && y >= 483 && y <= 584 && tie) {
+                repaint();
                 resetGameStats();
             }
         }
@@ -540,27 +532,21 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
         if (screen == 4 && players == 2 && !player1win && !player2win && !tie) {
             Graphics g = getGraphics();
+            g.setColor(Color.WHITE);
+            g.setFont(fortnite.deriveFont(45f));
 
             if (dotCount == 0) {
-                g.setColor(Color.WHITE);
-                g.setFont(fortnite.deriveFont(45f));
                 g.drawString(".", 961, 315);
                 dotCount++;
             } else if (dotCount == 1) {
-                g.setColor(Color.WHITE);
-                g.setFont(fortnite.deriveFont(45f));
                 g.drawString(".", 976, 315);
                 dotCount++;
             } else if (dotCount == 2) {
-                g.setColor(Color.WHITE);
-                g.setFont(fortnite.deriveFont(45f));
                 g.drawString(". ", 991, 315);
                 dotCount++;
             } else if (dotCount == 3) {
                 dotCount = 0;
                 g.drawImage(background2, 609, 0, null);
-                g.setColor(Color.WHITE);
-                g.setFont(fortnite.deriveFont(45f));
                 g.drawString("PLAYER " + turn + "'S TURN", 695, 315);
             }
         }
