@@ -8,6 +8,7 @@ import java.io.IOException;
 public class TicTacToeGame extends JPanel implements MouseListener, ActionListener {
     private final Timer timer = new Timer(250, this);
     Image title;
+    Image player1;
     Image player2;
     Image lobby;
     Image background;
@@ -19,6 +20,14 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     Image renegade;
     Image stan;
     Image wildcat;
+    Image wildcat2;
+    Image jonesy2;
+    Image headhunter2;
+    Image hawk2;
+    Image stan2;
+    Image ramirez2;
+    Image banshee2;
+    Image renegade2;
     Image victory;
     Image background2;
     Image repaintplayerselect;
@@ -105,8 +114,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
         try {
             title = ImageIO.read(new File("Title.png"));
-            lobby = ImageIO.read(new File("LobbyScreenMain.png"));
-            player2 = ImageIO.read(new File("player2.png"));
+            lobby = ImageIO.read(new File("Lobby.png"));
             background = ImageIO.read(new File("dustydepot.jpg"));
             victory = ImageIO.read(new File("victoryRoyale.png"));
             background2 = ImageIO.read(new File("Board2.png"));
@@ -123,8 +131,18 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             playerselect2 = ImageIO.read(new File("Playerselect2.png"));
             selectRect = ImageIO.read(new File("SelectRect.png"));
             buttons = ImageIO.read(new File("buttons.png"));
-            xImage = hawk.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
-            oImage = banshee.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+            wildcat2 = ImageIO.read(new File("WildcatLobby.png"));
+            jonesy2 = ImageIO.read(new File("JonesyLobby.png"));
+            headhunter2 = ImageIO.read(new File("HeadhunterLobby.png"));
+            hawk2 = ImageIO.read(new File("HawkLobby.png"));
+            stan2 = ImageIO.read(new File("StanLobby.png"));
+            ramirez2 = ImageIO.read(new File("RamirezLobby.png"));
+            banshee2 = ImageIO.read(new File("BansheeLobby.png"));
+            renegade2 = ImageIO.read(new File("RenegadeLobby.png"));
+            player1 = headhunter2;
+            player2 = stan2;
+            xImage = headhunter.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+            oImage = stan.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
         } catch (IOException e) {
             System.exit(1);
         }
@@ -196,6 +214,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
      */
     public void drawLobby(Graphics g) {
         g.drawImage(lobby, 0, 0, null);
+        g.drawImage(player1, 0, 0, null);
         g.setFont(fortnite.deriveFont(53f));
         g.setColor(Color.black);
 
@@ -229,7 +248,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             g.setFont(fortnite.deriveFont(36f));
             g.setColor(Color.white);
             g.drawString("DUOS", 891, 454);
-            g.drawImage(player2, 124, 107, null);
+            g.drawImage(player2, 0, 0, null);
         }
 
     }
@@ -241,9 +260,11 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     public void drawCharacterSelect(Graphics g) {
         if (playerselect == 1) {
             g.drawImage(playerselect1, 0, 0, null);
+            g.drawImage(selectRect, 306, 52, null);
         } else if (playerselect == 2) {
             g.drawImage(repaintplayerselect, 0, 0, null);
             g.drawImage(playerselect2, 0, 0, null);
+            g.drawImage(selectRect, 306, 52, null);
         }
     }
 
@@ -441,10 +462,12 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             if (x >= 42 && x <= 242 && y >= 52 && y <= 296) {
                 if (playerselect == 1) {
                     xImage = hawk.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    player1 = hawk2;
                     g.drawImage(playerselect1, 0, 0, null);
                     g.drawImage(selectRect, 40, 52, null);
                 } else if (playerselect == 2) {
                     oImage = renegade.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    player2 = renegade2;
                     g.drawImage(playerselect2, 0, 0, null);
                     g.drawImage(selectRect, 40, 52, null);
                 }
@@ -452,11 +475,13 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             if (x >= 310 && x <= 507 && y >= 52 && y <= 296) {
                 if (playerselect == 1) {
                     xImage = headhunter.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    player1 = headhunter2;
                     g.drawImage(playerselect1, 0, 0, null);
                     g.drawImage(selectRect, 306, 52, null);
 
                 } else if (playerselect == 2) {
                     oImage = stan.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    player2 = stan2;
                     g.drawImage(playerselect2, 0, 0, null);
                     g.drawImage(selectRect, 306, 52, null);
                 }
@@ -464,10 +489,12 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             if (x >= 567 && x <= 763 && y >= 52 && y <= 296) {
                 if (playerselect == 1) {
                     xImage = jonesy.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    player1 = jonesy2;
                     g.drawImage(playerselect1, 0, 0, null);
                     g.drawImage(selectRect, 563, 52, null);
                 } else if (playerselect == 2) {
                     oImage = ramirez.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    player2 = ramirez2;
                     g.drawImage(playerselect2, 0, 0, null);
                     g.drawImage(selectRect, 563, 52, null);
                 }
@@ -475,11 +502,13 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             if (x >= 830 && x <= 1028 && y >= 52 && y <= 296) {
                 if (playerselect == 1) {
                     xImage = wildcat.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    player1 = wildcat2;
                     g.drawImage(playerselect1, 0, 0, null);
                     g.drawImage(selectRect, 826, 52, null);
 
                 } else if (playerselect == 2) {
                     oImage = banshee.getScaledInstance(199, 199, Image.SCALE_SMOOTH);
+                    player2 = banshee2;
                     g.drawImage(playerselect2, 0, 0, null);
                     g.drawImage(selectRect, 826, 52, null);
                 }
