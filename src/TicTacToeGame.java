@@ -1,3 +1,5 @@
+package src;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -57,6 +59,8 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     boolean player2win = false;
     boolean tie = false;
 
+    String gameMenuMode = "solo";
+
     /**
      * Constructor
      */
@@ -67,6 +71,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 Graphics g = getGraphics();
+                System.out.println(keyCode);
 
                 // exit game
                 if (keyCode == KeyEvent.VK_ESCAPE) {
@@ -89,28 +94,19 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
 
                 if (screen == 2) {
                     if (keyCode == KeyEvent.VK_RIGHT) {
-                        keypressed++;
-                        Font biggerFont2 = fortnite.deriveFont(36f);
-                        g.setFont(biggerFont2);
-
+                        gameMenuMode = gameMenuMode == "solo" ? "duo" : "solo";
                         if (keypressed % 2 == 1) {
-                            drawLobby(g);
-                        }
-
-                        if (keypressed % 2 == 0) {
-                            g.setColor(Color.decode("#2b3348"));
-                            g.fillRect(850, 427, 151, 31);
-                            g.setColor(Color.white);
-                            g.setFont(biggerFont2);
-                            g.drawString("DUOS", 891, 454);
-                            g.drawImage(player2, 124, 107, null);
-                            g.setFont(fortnite);
                             players = 2;
+                            drawLobby(g);
+                        } else if (keypressed % 2 == 0) {
+                            players = 1;
+                            drawLobby(g);
                         }
                     }
                 }
             }
         });
+
 
         try {
             title = ImageIO.read(new File("Title.png"));
@@ -219,19 +215,17 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
         g.setColor(Color.black);
 
         if (playerselect == 1){
-
             g.drawString("SETUP", 870, 557);
-
-            if (mousepressed %2 == 1)
+            if (gameMenuMode == "solo")
                 players=1;
-            else if (mousepressed %2 == 0)
+            else if (gameMenuMode == "duo")
                 players=2;
         }
         else if (playerselect == 2){
             g.drawString("PLAY!", 877, 557);
-            if (mousepressed %2 == 1)
+            if (gameMenuMode == "solo")
                 players=1;
-            else if (mousepressed %2 == 0)
+            else if (gameMenuMode == "duo")
                 players=2;
         }
 
@@ -441,7 +435,7 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
         if (screen == 2) //lobby screen
         {
             if (x >= 1012 && x <= 1032 && y >= 430 && y <= 454) {
-                mousepressed++;
+                gameMenuMode = gameMenuMode == "solo" ? "duo" : "solo";
                 repaint();
             }
 
@@ -593,3 +587,5 @@ public class TicTacToeGame extends JPanel implements MouseListener, ActionListen
     public void mouseExited(MouseEvent e) {
     }
 }
+
+
